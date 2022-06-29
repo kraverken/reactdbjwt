@@ -1,5 +1,4 @@
 import "./App.css";
-import Header from "./scenes/Header";
 import Home from "./scenes/Home";
 import About from "./scenes/About";
 import Employee from "./scenes/Employee";
@@ -10,7 +9,6 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Header />
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/home" element={<Home />}></Route>

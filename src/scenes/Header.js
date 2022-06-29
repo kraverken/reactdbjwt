@@ -1,7 +1,20 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 function Header() {
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+  useEffect(() => {
+    let usr = localStorage.getItem("currentUser");
+    if (usr) {
+      setUser(usr);
+    }
+  }, []);
+
+  const logOut = () => {
+    localStorage.clear();
+    navigate("/login");
+  };
   return (
     <div>
       <nav class="navbar navbar-dark bg-dark navbar-expand-lg navbar-light bg-light">
@@ -35,7 +48,27 @@ function Header() {
               </a>
             </li>
           </ul>
-          <form class="form-inline my-2 my-lg-0">
+          {user ? (
+            <div />
+          ) : (
+            <Link to={"/register"}>
+              <button
+                class="btn btn-outline-light my-2 my-sm-0 mr-2"
+                type="submit"
+              >
+                Register
+              </button>
+            </Link>
+          )}
+          {user ? (
+            <a
+              onClick={logOut}
+              class="btn btn-light my-2 my-sm-0 "
+              type="submit"
+            >
+              Logout
+            </a>
+          ) : (
             <Link to={"/login"}>
               <button
                 class="btn btn-outline-light my-2 my-sm-0 mr-2"
@@ -44,12 +77,7 @@ function Header() {
                 Login
               </button>
             </Link>
-            <Link to={"/register"}>
-              <button class="btn btn-outline-light my-2 my-sm-0" type="submit">
-                Register
-              </button>
-            </Link>
-          </form>
+          )}
         </div>
       </nav>
     </div>
