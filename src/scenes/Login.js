@@ -1,7 +1,11 @@
+import axios from "axios";
 import React from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Header from "./Header";
 
 function Login() {
+  const navigate = useNavigate();
   const initData = {
     username: "",
     password: "",
@@ -19,11 +23,11 @@ function Login() {
     let hasError = false;
     let message = initData;
 
-    if (loginForm.username.trim().length == 0) {
+    if (loginForm.username.trim().length === 0) {
       hasError = true;
       message = { ...message, username: "Pls enter username" };
     }
-    if (loginForm.password.trim().length == 0) {
+    if (loginForm.password.trim().length === 0) {
       hasError = true;
       message = { ...message, password: "Pls enter password" };
     }
@@ -31,10 +35,24 @@ function Login() {
       setLoginFormError(message);
     } else {
       setLoginFormError(initData);
+      axios
+        .post("http://localhost:8081/login", loginForm)
+        .then((d) => {
+          if (d.data.status == 1) {
+            localStorage.setItem("currentUser", loginForm.username);
+            navigate("/employee");
+          } else {
+            alert(d.data.message);
+          }
+        })
+        .catch((e) => {
+          alert(e.message);
+        });
     }
   };
   return (
     <div>
+      <Header />
       <div className="col-lg-6 mx-auto p-2 m-2">
         <div class="card text-center">
           <div class="card-header">Login</div>

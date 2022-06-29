@@ -1,7 +1,11 @@
 import React from "react";
 import { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import Header from "./Header";
 
 function Register() {
+  const navigate = useNavigate();
   const initData = {
     username: "",
     password: "",
@@ -21,22 +25,22 @@ function Register() {
     let hasError = false;
     let message = initData;
 
-    if (registerForm.username.trim().length == 0) {
+    if (registerForm.username.trim().length === 0) {
       hasError = true;
       message = { ...message, username: "Pls enter username" };
     }
-    if (registerForm.password.trim().length == 0) {
+    if (registerForm.password.trim().length === 0) {
       hasError = true;
       message = { ...message, password: "Pls enter password" };
     }
-    if (registerForm.confirmpassword.trim().length == 0) {
+    if (registerForm.confirmpassword.trim().length === 0) {
       hasError = true;
       message = {
         ...message,
         confirmpassword: "Pls enter password once again",
       };
     }
-    if (registerForm.password != registerForm.confirmpassword) {
+    if (registerForm.password !== registerForm.confirmpassword) {
       hasError = true;
       message = { ...message, confirmpassword: "Passwords dont match" };
     }
@@ -45,11 +49,24 @@ function Register() {
     } else {
       setRegisterFormError(initData);
       // axios
+      axios
+        .post("http://localhost:8081/register", registerForm)
+        .then((d) => {
+          if (d.data.status == 1) {
+            navigate("/login");
+          } else {
+            alert(d.data.message);
+          }
+        })
+        .catch((e) => {
+          alert(e.message);
+        });
     }
   };
 
   return (
     <div>
+      <Header />
       <div className="col-lg-6 mx-auto p-2 m-2">
         <div class="card text-center">
           <div class="card-header">Register</div>
