@@ -5,6 +5,8 @@ const cors = require("cors");
 const userObj = require("./models/User");
 const employeeObj = require("./models/Employee");
 const jwt = require("jsonwebtoken");
+const depObj = require("./models/Department");
+const dsgObj = require("./models/Designation");
 
 const app = express();
 app.use(express.json());
@@ -121,7 +123,7 @@ app.delete("/deleteEmployee", (req, res) => {
   }
 });
 
-// DISPLAY Employee
+// GET Employee
 app.get("/getEmployee", (req, res) => {
   var authheader = req.headers.authorization;
   if (authheader != "null") {
@@ -142,6 +144,97 @@ app.get("/getEmployee", (req, res) => {
   }
 });
 
+// DISPLAY DEPARTMENT
+app.get("/getDep", (req, res) => {
+  depObj
+    .find()
+    .then((d) => {
+      res.json({ status: 1, data: d });
+    })
+    .catch((e) => {
+      res.json({ status: -1, data: null });
+    });
+});
+// SAVE DEPARTMENT
+app.post("/saveDep", (req, res) => {
+  depObj
+    .create(req.body)
+    .then((d) => {
+      res.json({ status: 1, message: "data saved" });
+    })
+    .catch((e) => {
+      res.json({ status: -1, message: "data not saved" });
+    });
+});
+// UPDATE DEPARTMENT
+app.put("/updateDep", (req, res) => {
+  depObj
+    .updateOne({ _id: req.body._id }, { $set: req.body })
+    .then((d) => {
+      res.json({ status: 1, message: "Department data updated" });
+    })
+    .catch((e) => {
+      res.json({ status: -1, message: "Department data not updated" });
+    });
+});
+// DELETE DEPARTMENT
+app.delete("/deleteDep", (req, res) => {
+  depObj
+    .deleteOne({ _id: req.body._id })
+    .then((d) => {
+      res.json({ status: 1, message: "Employee data deleted" });
+    })
+    .catch((e) => {
+      res.json({ status: -1, message: "Employee data not deleted" });
+    });
+});
+
+// DISPLAY DESIGNATION
+app.get("/getDsg", (req, res) => {
+  dsgObj
+    .find()
+    .then((d) => {
+      res.json({ status: 1, data: d });
+    })
+    .catch((e) => {
+      res.json({ status: -1, data: null });
+    });
+});
+// SAVE DESIGNATION
+app.post("/saveDsg", (req, res) => {
+  dsgObj
+    .create(req.body)
+    .then((d) => {
+      res.json({ status: 1, message: "data saved" });
+    })
+    .catch((e) => {
+      res.json({ status: -1, message: "data not saved" });
+    });
+});
+// UPDATE DESIGNATION
+app.put("/updateDsg", (req, res) => {
+  dsgObj
+    .updateOne({ _id: req.body._id }, { $set: req.body })
+    .then((d) => {
+      res.json({ status: 1, message: "Department data updated" });
+    })
+    .catch((e) => {
+      res.json({ status: -1, message: "Department data not updated" });
+    });
+});
+// DELETE DESIGNATION
+app.delete("/deleteDsg", (req, res) => {
+  dsgObj
+    .deleteOne({ _id: req.body._id })
+    .then((d) => {
+      res.json({ status: 1, message: "Employee data deleted" });
+    })
+    .catch((e) => {
+      res.json({ status: -1, message: "Employee data not deleted" });
+    });
+});
+
+// Connecting database and application server
 mongoose.connect(process.env.DB_URL, () => {
   //   console.log("Db connected");
   app.listen(process.env.PORT, () => {
