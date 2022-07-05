@@ -7,6 +7,7 @@ const employeeObj = require("./models/Employee");
 const jwt = require("jsonwebtoken");
 const depObj = require("./models/Department");
 const dsgObj = require("./models/Designation");
+const empObj = require("./models/emp");
 
 const app = express();
 app.use(express.json());
@@ -40,7 +41,6 @@ app.post("/register", (req, res) => {
     }
   });
 });
-
 // LOGIN
 app.post("/login", (req, res) => {
   userObj
@@ -59,7 +59,6 @@ app.post("/login", (req, res) => {
       console.log(e);
     });
 });
-
 // NEW Employee
 app.post("/saveEmployee", (req, res) => {
   var authheader = req.headers.authorization;
@@ -80,7 +79,6 @@ app.post("/saveEmployee", (req, res) => {
     });
   }
 });
-
 // UPDATE Employee
 app.put("/updateEmployee", (req, res) => {
   var authheader = req.headers.authorization;
@@ -101,7 +99,6 @@ app.put("/updateEmployee", (req, res) => {
     });
   }
 });
-
 // DELETE Employee
 app.delete("/deleteEmployee", (req, res) => {
   var authheader = req.headers.authorization;
@@ -122,7 +119,6 @@ app.delete("/deleteEmployee", (req, res) => {
     });
   }
 });
-
 // GET Employee
 app.get("/getEmployee", (req, res) => {
   var authheader = req.headers.authorization;
@@ -166,6 +162,7 @@ app.post("/saveDep", (req, res) => {
       res.json({ status: -1, message: "data not saved" });
     });
 });
+/*
 // UPDATE DEPARTMENT
 app.put("/updateDep", (req, res) => {
   depObj
@@ -188,6 +185,7 @@ app.delete("/deleteDep", (req, res) => {
       res.json({ status: -1, message: "Employee data not deleted" });
     });
 });
+*/
 
 // DISPLAY DESIGNATION
 app.get("/getDsg", (req, res) => {
@@ -211,6 +209,7 @@ app.post("/saveDsg", (req, res) => {
       res.json({ status: -1, message: "data not saved" });
     });
 });
+/*
 // UPDATE DESIGNATION
 app.put("/updateDsg", (req, res) => {
   dsgObj
@@ -231,6 +230,43 @@ app.delete("/deleteDsg", (req, res) => {
     })
     .catch((e) => {
       res.json({ status: -1, message: "Employee data not deleted" });
+    });
+});
+*/
+
+// SAVE EMP
+app.post("/saveEmp", (req, res) => {
+  empObj
+    .create(req.body)
+    .then((d) => {
+      res.json({ status: 1, message: "Emp data saved" });
+    })
+    .catch((e) => {
+      res.json({ status: -1, message: e.message });
+    });
+});
+// UPDATE EMP
+app.put("/updateEmp", (req, res) => {
+  empObj
+    .updateOne({ _id: req.body._id }, { $set: req.body })
+    .then((d) => {
+      res.json({ status: 1, message: "Emp data updated" });
+    })
+    .catch((e) => {
+      res.json({ status: -1, message: e.message });
+    });
+});
+// GET EMP
+app.get("/getEmp", (req, res) => {
+  empObj
+    .find()
+    .populate("department")
+    .populate("designation")
+    .then((d) => {
+      res.json({ status: 1, data: d });
+    })
+    .catch((e) => {
+      res.json({ status: -1, data: null });
     });
 });
 
