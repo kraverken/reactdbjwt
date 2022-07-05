@@ -60,38 +60,65 @@ app.post("/login", (req, res) => {
 
 // NEW Employee
 app.post("/saveEmployee", (req, res) => {
-  employeeObj
-    .create(req.body)
-    .then((d) => {
-      res.json({ status: 1, message: "Employee data saved" });
-    })
-    .catch((e) => {
-      res.json({ status: -1, message: "Employee data not saved" });
+  var authheader = req.headers.authorization;
+  if (authheader != "null") {
+    employeeObj
+      .create(req.body)
+      .then((d) => {
+        res.json({ status: 1, message: "Employee data saved" });
+      })
+      .catch((e) => {
+        res.json({ status: -1, message: "Employee data not saved" });
+      });
+  } else {
+    res.json({
+      status: 0,
+      message:
+        "You are not authorized to add employee please login to continue",
     });
+  }
 });
 
 // UPDATE Employee
 app.put("/updateEmployee", (req, res) => {
-  employeeObj
-    .updateOne({ _id: req.body._id }, { $set: req.body })
-    .then((d) => {
-      res.json({ status: 1, message: "Employee data updated" });
-    })
-    .catch((e) => {
-      res.json({ status: -1, message: "Employee data not updated" });
+  var authheader = req.headers.authorization;
+  if (authheader != "null") {
+    employeeObj
+      .updateOne({ _id: req.body._id }, { $set: req.body })
+      .then((d) => {
+        res.json({ status: 1, message: "Employee data updated" });
+      })
+      .catch((e) => {
+        res.json({ status: -1, message: "Employee data not updated" });
+      });
+  } else {
+    res.json({
+      status: 0,
+      message:
+        "You are not authorized to perform this operation please login to continue",
     });
+  }
 });
 
 // DELETE Employee
 app.delete("/deleteEmployee", (req, res) => {
-  employeeObj
-    .deleteOne({ _id: req.body._id })
-    .then((d) => {
-      res.json({ status: 1, message: "Employee data deleted" });
-    })
-    .catch((e) => {
-      res.json({ status: -1, message: "Employee data not deleted" });
+  var authheader = req.headers.authorization;
+  if (authheader != "null") {
+    employeeObj
+      .deleteOne({ _id: req.body._id })
+      .then((d) => {
+        res.json({ status: 1, message: "Employee data deleted" });
+      })
+      .catch((e) => {
+        res.json({ status: -1, message: "Employee data not deleted" });
+      });
+  } else {
+    res.json({
+      status: 0,
+      message:
+        "You are not authorized to perform this operation please login to continue",
     });
+  }
 });
 
 // DISPLAY Employee
@@ -109,10 +136,12 @@ app.get("/getEmployee", (req, res) => {
   } else {
     res.json({
       status: 0,
-      message: "You are not authorized to view this page",
+      message:
+        "You are not authorized to view this page please login to continue",
     });
   }
 });
+
 mongoose.connect(process.env.DB_URL, () => {
   //   console.log("Db connected");
   app.listen(process.env.PORT, () => {

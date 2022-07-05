@@ -26,6 +26,7 @@ function Employee() {
       .get("http://localhost:8081/getEmployee", {
         headers: { Authorization: token },
       })
+      // JWT Token for authentication
       .then((d) => {
         if (d.data.status == 1) {
           setEmployee(d.data.empdata);
@@ -70,8 +71,11 @@ function Employee() {
     return employeeRows;
   }
   const saveClick = () => {
+    let token = localStorage.getItem("currentUser");
     axios
-      .post("http://localhost:8081/saveEmployee", employeeForm)
+      .post("http://localhost:8081/saveEmployee", employeeForm, {
+        headers: { Authorization: token },
+      })
       .then((d) => {
         if (d.data.status == 1) {
           getAll();
@@ -85,8 +89,11 @@ function Employee() {
       });
   };
   const updateClick = () => {
+    let token = localStorage.getItem("currentUser");
     axios
-      .put("http://localhost:8081/updateEmployee", employeeForm)
+      .put("http://localhost:8081/updateEmployee", employeeForm, {
+        headers: { Authorization: token },
+      })
       .then((d) => {
         if (d.data.status == 1) {
           getAll();
@@ -99,8 +106,11 @@ function Employee() {
       });
   };
   function deleteClick(id) {
+    let token = localStorage.getItem("currentUser");
     axios
-      .delete("http://localhost:8081/deleteEmployee", employeeForm)
+      .delete("http://localhost:8081/deleteEmployee", employeeForm, {
+        headers: { Authorization: token },
+      })
       .then((d) => {
         if (d.data.status == 1) {
           getAll();
