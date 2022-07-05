@@ -47,6 +47,11 @@ function Header() {
                 Employee
               </a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/empdepdsg">
+                Employee Dep-Dsg
+              </a>
+            </li>
           </ul>
           {user ? (
             <div />
@@ -61,13 +66,6 @@ function Header() {
             </Link>
           )}
           {user ? (
-            // <a
-            //   onClick={logOut}
-            //   class="btn btn-light my-2 my-sm-0 "
-            //   type="submit"
-            // >
-            //   Logout
-            // </a>
             <button
               class="btn btn-outline-light my-2 my-sm-0 mr-2"
               type="submit"
