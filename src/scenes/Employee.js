@@ -115,6 +115,82 @@ function Employee() {
   return (
     <div>
       <Header />
+      <h2 className="text-dark text-center p-2">Employee Page</h2>
+      <div className="row">
+        <div className="col-9">
+          <h2 className="text-info text-left p-2">Employee List</h2>
+        </div>
+        <div className="col-3">
+          <button
+            className="btn btn-info"
+            data-toggle="modal"
+            data-target="#newModal"
+            onClick={() => {
+              setEmployeeForm({});
+            }}
+          >
+            New Employee
+          </button>
+        </div>
+      </div>
+      <div className="col-9 p-3 m-3">{renderEmployee()}</div>
+      {/* Save */}
+      <div class="modal" id="newModal" tabIndex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header" style={{ backgroundColor: "darkcyan" }}>
+              <h5 class="modal-title text-white">New Employee</h5>
+              <button class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div className="form-group row p-2 m-2">
+                <label for="textname">Name</label>
+                <input
+                  id="textname"
+                  name="name" //same as in server and function of employee
+                  type="text"
+                  className="form-control"
+                  onChange={changeHandler}
+                ></input>
+              </div>
+              <div className="form-group row p-2 m-2">
+                <label for="textaddress">Address</label>
+                <input
+                  id="textaddress"
+                  name="address" //same as in server and function of employee
+                  type="text"
+                  className="form-control"
+                  onChange={changeHandler}
+                ></input>
+              </div>
+              <div className="form-group row p-2 m-2">
+                <label for="textsalary">Salary</label>
+                <input
+                  id="textsalary"
+                  name="salary" //same as in server and function of employee
+                  type="number"
+                  className="form-control"
+                  onChange={changeHandler}
+                ></input>
+              </div>
+            </div>
+            <div class="modal-footer" style={{ backgroundColor: "darkcyan" }}>
+              <button
+                data-dismiss="modal"
+                onClick={saveClick}
+                class="btn btn-success"
+              >
+                Save
+              </button>
+              <button data-dismiss="modal" class="btn btn-danger">
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
