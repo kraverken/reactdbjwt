@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const userObj = require("./models/User");
 const employeeObj = require("./models/Employee");
+const jwt = require("jsonwebtoken");
 
 const app = express();
 app.use(express.json());
@@ -22,7 +23,10 @@ app.post("/register", (req, res) => {
         .create(req.body)
         .then((d) => {
           if (d) {
-            res.json({ status: 1, message: "User registered succesfully" });
+            res.json({
+              status: 1,
+              message: "User registered succesfully",
+            });
           } else {
             res.json({ status: -1, message: "User not registered" });
           }
@@ -41,7 +45,10 @@ app.post("/login", (req, res) => {
     .findOne(req.body)
     .then((d) => {
       if (d) {
-        res.json({ status: 1, message: "User login successful" });
+        let data = { userId: d._id };
+        // const token
+        const token = jwt.sign(data, process.env.JWT_SECRET_KEY);
+        res.json({ status: 1, message: "User login successful", data: token });
       } else {
         res.json({ status: -1, message: "Wrong username or password" });
       }
@@ -89,14 +96,22 @@ app.delete("/deleteEmployee", (req, res) => {
 
 // DISPLAY Employee
 app.get("/getEmployee", (req, res) => {
-  employeeObj
-    .find()
-    .then((d) => {
-      res.json({ status: 1, data: d });
-    })
-    .catch((e) => {
-      res.json({ status: -1, message: "data not found" });
+  var authheader = req.headers.authorization;
+  if (authheader != "null") {
+    employeeObj
+      .find()
+      .then((d) => {
+        res.json({ status: 1, data: d });
+      })
+      .catch((e) => {
+        res.json({ status: -1, message: "data not found" });
+      });
+  } else {
+    res.json({
+      status: 0,
+      message: "You are not authorized to view this page",
     });
+  }
 });
 mongoose.connect(process.env.DB_URL, () => {
   //   console.log("Db connected");

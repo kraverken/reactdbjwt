@@ -21,8 +21,11 @@ function Employee() {
   };
 
   function getAll() {
+    let token = localStorage.getItem("currentUser");
     axios
-      .get("http://localhost:8081/getEmployee")
+      .get("http://localhost:8081/getEmployee", {
+        headers: { Authorization: token },
+      })
       .then((d) => {
         if (d.data.status == 1) {
           setEmployee(d.data.empdata);
@@ -112,7 +115,6 @@ function Employee() {
   return (
     <div>
       <Header />
-      <h2>Employee</h2>
     </div>
   );
 }

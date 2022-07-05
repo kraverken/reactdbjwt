@@ -39,7 +39,9 @@ function Login() {
         .post("http://localhost:8081/login", loginForm)
         .then((d) => {
           if (d.data.status == 1) {
-            localStorage.setItem("currentUser", loginForm.username);
+            // localStorage.setItem("currentUser", loginForm.username);
+            // alert(d.data.data);
+            localStorage.setItem("currentUser", d.data.data);
             navigate("/employee");
           } else {
             alert(d.data.message);
